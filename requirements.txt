@@ -1,0 +1,7 @@
+tqdm
+nltk
+numpy
+keras
+pandas
+tensorflow
+scikit-learn

@@ -99,3 +99,14 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+.idea/
+
+# ignore data files
+data/*
+!data/__init__.py
+!data/apostrophe.json
+
+# ignore model weights file and submission files
+output/*
+!output/__init__.py
