@@ -109,6 +109,32 @@ def prepare_data(train_file, test_file, preprocess_config):
     return data_dict
 
 
+def query_data(query_list, word_index, preprocess_config):
+    """
+    Convert queries to sequence data for model predictions
+    :param query_list: list of queries
+    :param word_index: word to index dictionary
+    :param preprocess_config: preprocessing config parameters
+    :return: ndarray of seq data for queries
+    """
+    # unknown or out of vocab words will be given zero index
+    query_seq = np.zeros(shape=(len(query_list), preprocess_config['max_seq_len']))
+
+    for qi, query in enumerate(query_list):
+        # process comment same as training
+        processed_query = process_comment(query, preprocess_config)
+        query_words = processed_query.split(" ")
+        q_length = len(query_words)
+        # truncate query if length is more than max length
+        if q_length > preprocess_config['max_seq_len']:
+            query_words = query_words[:preprocess_config['max_seq_len']]
+        for word_i, word in enumerate(query_words):
+            # update index for words in word_index dict
+            if word in word_index:
+                query_seq[qi][preprocess_config['max_seq_len']-q_length+word_i] = word_index[query_words[word_i]]
+    return query_seq
+
+
 def get_embedding_matrix(embedding_type, embedding_size, word_dict):
     """
     Read fasttext and glove embedding files and create embedding matrix for given word to index dictionary
