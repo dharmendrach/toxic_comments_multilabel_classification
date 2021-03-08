@@ -78,7 +78,7 @@ def custom_multi_label_skfold(labels, n_folds, random_state=42):
     d = np.dot(labels, c)
 
     # apply stratifiedKFold on converted labels
-    skf = StratifiedKFold(n_splits=n_folds, random_state=random_state)
+    skf = StratifiedKFold(n_splits=n_folds, random_state=random_state, shuffle=True)
     # return generator for train and validation index
     return ((train_index, val_index) for train_index, val_index in skf.split(d, d))
 
